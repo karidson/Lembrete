@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self' https://karidsonbessa.com data: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://karidsonbessa.com; media-src *; img-src 'self' data: content:;">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover, user-scalable=no">
+    <meta name="color-scheme" content="light">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
+    <title>Meus Lembretes</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🧠</span>
+                    <h1>Meus Lembretes</h1>
+                </div>
+                <button id="btn-sync" class="btn-icon" title="Sincronizar">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12a9 9 0 11-9-9c2.52 0 4.93 1 6.74 2.74L21 8" />
+                        <path d="M21 3v5h-5" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Tela de Chat -->
+            <section id="tab-chat" class="tab-content active">
+                <div class="chat-container">
+                    <div id="chat-messages" class="chat-messages">
+                        <div class="message bot">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <p>Olá! 👋 Sou seu assistente de estudos.</p>
+                                <p>Pergunte-me sobre qualquer coisa que você tenha anotado nos seus lembretes!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <div class="chat-input-wrapper">
+                            <textarea id="chat-input" placeholder="Digite sua pergunta..." rows="1"></textarea>
+                            <button id="btn-send" class="btn-send" disabled>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tela de Lembretes -->
+            <section id="tab-lembretes" class="tab-content">
+                <div class="lembretes-header">
+                    <div class="search-box">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="M21 21l-4.35-4.35" />
+                        </svg>
+                        <input type="text" id="search-input" placeholder="Buscar lembretes...">
+                    </div>
+                </div>
+                <div id="lembretes-list" class="lembretes-list">
+                    <!-- Lembretes serão inseridos aqui -->
+                </div>
+                <div id="empty-state" class="empty-state hidden">
+                    <div class="empty-icon">📝</div>
+                    <h3>Nenhum lembrete ainda</h3>
+                    <p>Comece a registrar o que você aprendeu!</p>
+                </div>
+            </section>
+
+            <!-- Tela de Novo/Editar Lembrete -->
+            <section id="tab-novo" class="tab-content">
+                <form id="form-lembrete" class="form-lembrete">
+                    <input type="hidden" id="lembrete-id">
+
+                    <div class="form-group">
+                        <label for="lembrete-titulo">
+                            <span class="label-icon">📌</span>
+                            Título do Lembrete
+                        </label>
+                        <input type="text" id="lembrete-titulo" placeholder="Ex: Como criar app Android com Cordova"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lembrete-conteudo">
+                            <span class="label-icon">📖</span>
+                            O que você aprendeu?
+                        </label>
+                        <textarea id="lembrete-conteudo"
+                            placeholder="Descreva aqui o que você aprendeu, os passos, comandos, dicas..." rows="12"
+                            required></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" id="btn-cancelar" class="btn btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <span id="btn-salvar-text">Salvar Lembrete</span>
+                            <span id="btn-salvar-loading" class="hidden">Salvando...</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-tab="chat">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                </svg>
+                <span>Chat IA</span>
+            </button>
+            <button class="nav-item" data-tab="lembretes">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                </svg>
+                <span>Lembretes</span>
+            </button>
+            <button class="nav-item" data-tab="novo">
+                <div class="nav-item-plus">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2.5">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                </div>
+                <span>Novo</span>
+            </button>
+        </nav>
+
+        <!-- Modal de Visualização -->
+        <div id="modal-view" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-titulo"></h2>
+                    <button id="btn-close-modal" class="btn-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="modal-conteudo" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button id="btn-edit" class="btn btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                        </svg>
+                        Editar
+                    </button>
+                    <button id="btn-delete" class="btn btn-danger">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="3 6 5 6 21 6" />
+                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+                        </svg>
+                        Excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toast-container"></div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <script src="cordova.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
